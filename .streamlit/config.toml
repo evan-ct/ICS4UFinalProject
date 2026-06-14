@@ -1,0 +1,13 @@
+# Étozi config — place at: <your project folder>/.streamlit/config.toml
+# REPLACES your existing config.toml ([server] section is new and required
+# for the achievement card images to load).
+
+[theme]
+base = "light"
+primaryColor = "#8fa8d8"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f9"
+textColor = "#2d2d2d"
+
+[server]
+enableStaticServing = true
