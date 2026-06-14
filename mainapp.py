@@ -1,4 +1,4 @@
-# ÉTOZI BUILD — rev 2026-06-13av
+# ÉTOZI BUILD — rev 2026-06-13ax
 #   Fixes vous→on / ils→nous mismatch: verbecc returns 9 forms (je tu il elle
 #   on nous vous ils elles), now mapped correctly to our 6 pronoun slots.
 #   Fixes pronoun/answer mismatch (ils→nous bug): verbecc forms no longer
@@ -20,7 +20,7 @@ from datetime import date, datetime, timedelta
 import base64 as _b64mod
 import html as _html
 
-APP_REV = "av"
+APP_REV = "ax"
 
 # ── Animated book sprite (booksprite.webm inlined as base64) ─────────────
 # Inlined so it resolves inside Streamlit components.html iframes.
@@ -4339,7 +4339,14 @@ def render_placeholder(title, note):
 # SETTINGS PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 
-TEACHER_CODE = st.secrets.get("app", {}).get("teacher_code", "")
+def safe_secret(section, key, default=""):
+    try:
+        return st.secrets.get(section, {}).get(key, default)
+    except Exception:
+        return default
+
+
+TEACHER_CODE = safe_secret("app", "teacher_code")
 
 def render_reglages(user):
     st.markdown('<h1 class="dash-title">Réglages</h1>', unsafe_allow_html=True)
@@ -4413,6 +4420,12 @@ def render_reglages(user):
                     label_visibility="collapsed"
                 )
                 if code_input == TEACHER_CODE:
+                    conn = get_db()
+                    conn.execute("UPDATE users SET is_teacher=1 WHERE id=?",
+                                 (user["id"],))
+                    conn.commit()
+                    conn.close()
+                    st.session_state.user = get_user_by_id(user["id"])
                     st.session_state.teacher_code_verified = True
                     st.session_state.pop("teacher_code_input", None)
                     st.rerun()

@@ -1,5 +1,5 @@
 """
-Conjugation data layer for Étozi.   [BUILD rev 2026-06-13av]
+Conjugation data layer for Étozi.   [BUILD rev 2026-06-13ax]
 
 rev r: negation & reflexive flags in sentence specs — student must produce
 "ne...pas" and the reflexive pronoun themselves (hint shows "négatif"/"réfléchi").
@@ -32,7 +32,7 @@ import sqlite3
 import urllib.request
 import urllib.parse
 
-REV = "av"  # build revision — shown in the app sidebar to verify file sync
+REV = "ax"  # build revision — shown in the app sidebar to verify file sync
 DB_PATH = "frenchflow.db"
 API_BASE = "http://verbe.cc/vcfr/conjugate/fr/"
 API_TIMEOUT = 3  # seconds; short so a dead server fails fast instead of hanging
