@@ -4,6 +4,7 @@
 *.sqlite
 *.sqlite3
 *.sqlite3-journal
+frenchflow.db
 frenchflow_restore.sql
 verbecc.log
 
