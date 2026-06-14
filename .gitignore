@@ -1,3 +1,12 @@
+# Local/private app data
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+frenchflow_restore.sql
+verbecc.log
+
 # Personal
 secrets.toml
 

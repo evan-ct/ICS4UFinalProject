@@ -1,5 +1,5 @@
 """
-Conjugation data layer for Étozi.   [BUILD rev 2026-06-13an]
+Conjugation data layer for Étozi.   [BUILD rev 2026-06-13av]
 
 rev r: negation & reflexive flags in sentence specs — student must produce
 "ne...pas" and the reflexive pronoun themselves (hint shows "négatif"/"réfléchi").
@@ -32,7 +32,7 @@ import sqlite3
 import urllib.request
 import urllib.parse
 
-REV = "an"  # build revision — shown in the app sidebar to verify file sync
+REV = "av"  # build revision — shown in the app sidebar to verify file sync
 DB_PATH = "frenchflow.db"
 API_BASE = "http://verbe.cc/vcfr/conjugate/fr/"
 API_TIMEOUT = 3  # seconds; short so a dead server fails fast instead of hanging
@@ -862,7 +862,13 @@ def generate_question(level, verbs, pronoun_indices, mood_tense_pairs,
             flags = spec[4] if len(spec) > 4 else set()
             bits = [v]
             if show_tense:
-                bits.append(tense.lower())
+                # Indicatif tense names are unambiguous on their own, but a bare
+                # "présent" on a Conditionnel/Subjonctif/Impératif blank reads as
+                # présent indicatif. Prefix the mood for non-indicatif blanks so
+                # e.g. "Si nous étions… nous ____ (visiter, présent)" correctly
+                # shows "(visiter, conditionnel présent)".
+                bits.append(tense.lower() if mood == "Indicatif"
+                            else f"{mood.lower()} {tense.lower()}")
             if "négatif" in flags:
                 bits.append("négatif")
             if "réfléchi" in flags:
